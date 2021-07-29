@@ -1,0 +1,41 @@
+---
+- hosts: localhost
+
+  tasks:
+  - name: Create storage account
+    azure_rm_storageaccount:
+      resource_group: RGterraform
+      name: appstr
+      account_type: Standard_LRS
+
+  - name: Create public ip
+    azure_rm_publicipaddress:
+      resource_group: RGterraform
+      allocation_method: Static
+      name: apppip
+
+  - name: Create NIC
+    azure_rm_networkinterface:
+      resource_group: RGterraform
+      name: appnic
+      virtual_network: terraform-vnet
+      subnet: jenkins-subnet
+      public_ip_name: apppip
+      security_group: allow-all
+
+  - name: Create virtual machine
+    azure_rm_virtualmachine:
+      resource_group: RGterraform
+      name: appvm
+      vm_size: Standard_DS1_v2
+      storage_account: appstr
+      storage_container: testvm
+      storage_blob: testvm.vhd
+      admin_username: vmadmin
+      admin_password: April@123456789
+      network_interfaces: appnic
+      image:
+       offer: UbuntuServer
+       publisher: Canonical
+       sku: '18.04-LTS'
+       version: latest
