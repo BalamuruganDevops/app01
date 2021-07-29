@@ -5,7 +5,7 @@
   - name: Create storage account
     azure_rm_storageaccount:
       resource_group: RGterraform
-      name: appstr
+      name: appstr01
       account_type: Standard_LRS
 
   - name: Create public ip
