@@ -24,12 +24,7 @@
     apt:
       name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
       update_cache: yes
+      
   - name: Update apt and install docker-ce
     apt: update_cache=yes name=docker-ce state=latest
-    
-  - name: getting docker image from dockerhub
-    command: docker pull balamurugandevops/projecto1:latest
-  - name: stopping all docker containers if already running
-    shell: sudo docker stop $(sudo docker ps -a -q)
-  - name: running docker container from image
-    command: docker run -p 8080:8080 -dt balamurugandevops/projecto1:latest
+
