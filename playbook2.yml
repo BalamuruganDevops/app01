@@ -41,7 +41,7 @@
 
   - name: Install prerequisites for docker-compose
     apt:
-      name: ['python3-pip', 'python3-setuptools', 'virtualenv']
+      name: ['python2-pip', 'python2-setuptools', 'virtualenv']
 
   - name: Install docker-compose
     pip:
