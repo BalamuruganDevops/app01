@@ -4,33 +4,28 @@
   become_user: root
   tasks:
 
-  - name: Install aptitude using apt
-    apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
-
-  - name: Install prerequisites for Docker repository
-    apt:
-      name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg2', 'software-properties-common']
-      update_cache: yes
-
-  - name: Add Docker GPG key
-    apt_key:
-      url: https://download.docker.com/linux/ubuntu/gpg
-
-  - name: Add Docker APT repository
-    apt_repository:
-      repo: deb [arch=amd64] https://download.docker.com/{{ ansible_system | lower }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
-
   - name: Install Docker CE
     apt:
       name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
       update_cache: yes
-      
+
   - name: Update apt and install docker-ce
     apt: update_cache=yes name=docker-ce state=latest
+
+  - name: python update
+    command: update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+
+  - name: Install Docker Module for Python
+    pip:
+      name: docker
+
   - name: getting docker image from dockerhub
     command: docker pull balamurugandevops/projecto1:latest
+
   - name: stopping all docker containers if already running
     shell: sudo docker stop $(sudo docker ps -a -q)
+
   - name: running docker container from image
     command: docker run -p 8080:8080 -dt balamurugandevops/projecto1:latest
+
 
